@@ -69,6 +69,8 @@ func import(source_file, save_path, options, _r_platform_variants, r_gen_files):
 	var hSplit = texture.get_width() / options.Columns
 	var vSplit = texture.get_height() / options.Rows
 
+
+	var u = load(source_file)
 	
 	#var image = Image.new()
 	#var errimg = image.load(source_file)
@@ -83,7 +85,7 @@ func import(source_file, save_path, options, _r_platform_variants, r_gen_files):
 		for j in range(0,options.Rows):
 			var splitObjName = "%s.x%s_y%s.%s" % [newTargetSplitBase, str(i), str(j), get_save_extension()]
 			var splitObj = AtlasTexture.new()
-			splitObj.atlas = texture
+			splitObj.atlas = u
 			splitObj.region = Rect2(i*hSplit,j*vSplit,hSplit,vSplit)
 			#print_debug(splitObjName)
 			var err = ResourceSaver.save(splitObjName, splitObj)
