@@ -69,6 +69,15 @@ func import(source_file, save_path, options, _r_platform_variants, r_gen_files):
 	var hSplit = texture.get_width() / options.Columns
 	var vSplit = texture.get_height() / options.Rows
 
+	
+	#var image = Image.new()
+	#var errimg = image.load(source_file)
+	#var texture = ImageTexture.new()
+	#texture.create_from_image(image, 0)
+
+	#var sourceTex = StreamTexture.new()
+	#sourceTex.load(source_file)	
+	
 	print_debug(options)
 	for i in range(0,options.Columns):
 		for j in range(0,options.Rows):
