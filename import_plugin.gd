@@ -51,11 +51,25 @@ func get_resource_type():
 
 func import(source_file, save_path, options, _r_platform_variants, r_gen_files):
 	var newTargetSplitBase = source_file.get_basename()
+	var f = File.new()
+	var errF = f.open(source_file, File.READ)
+	if errF != OK:
+		return errF
 
-	var srcTexture: ImageTexture = load(source_file) as ImageTexture
+	var source = f.get_buffer(f.get_len())
+	f.close()
+
+	var sImg = Image.new()
+	sImg.load_png_from_buffer(source)
+	var srcTexture: ImageTexture = ImageTexture.new()
+	srcTexture.create_from_image(sImg)
 	if srcTexture == null:
 		print("could not open source file: ",source_file)
 		return false
+
+	var atlasName = "%s.%s" % [save_path, get_save_extension()]
+	ResourceSaver.save(atlasName, srcTexture)
+	srcTexture = load(atlasName)
 
 	var hSplit = srcTexture.get_width() / options.Columns
 	var vSplit = srcTexture.get_height() / options.Rows
@@ -90,6 +104,4 @@ func import(source_file, save_path, options, _r_platform_variants, r_gen_files):
 				if existingFile.file_exists(splitObjName):
 					print("remove existing file...")
 					var err = existingFile.remove(splitObjName)
-
-	var atlasName = "%s.%s" % [save_path, get_save_extension()]
-	return ResourceSaver.save(atlasName, srcTexture)
+	return OK
